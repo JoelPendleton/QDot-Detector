@@ -30,40 +30,48 @@ ANGLE_RANGE = 180
 
 # loss
 CLS_WEIGHT = 1.0
-REG_WEIGHT = 1.0 / 5.0
+REG_WEIGHT = 1.0
+ANGLE_WEIGHT = 0.5
 REG_LOSS_MODE = None
 
-VERSION = 'RetinaNet_QDOT_2x_20200915'
+# CSL
+LABEL_TYPE = 0  # {0: gaussian_label, 1: rectangular_label, 2: pulse_label, 3: triangle_label}
+RADUIUS = 6
+OMEGA = 1
+
+VERSION = 'RetinaNet_DOTA_CSL_2x_20200912'
 
 """
-v4 + 180
+gaussian label, omega=1, r=6
 
 This is your result for task 1:
 
-    mAP: 0.6416730011061602
+    mAP: 0.6569045253137319
     ap of each class:
-    plane:0.8821742942919781,
-    baseball-diamond:0.7440080093044878,
-    bridge:0.3831123976957141,
-    ground-track-field:0.6589485990451555,
-    small-vehicle:0.604798345202343,
-    large-vehicle:0.49767737835506365,
-    ship:0.6829402579754312,
-    tennis-court:0.871338023329556,
-    basketball-court:0.7813852482817419,
-    storage-tank:0.786012241585395,
-    soccer-ball-field:0.521218693379607,
-    roundabout:0.6001757439327997,
-    harbor:0.5127709102957538,
-    swimming-pool:0.5936834817142064,
-    helicopter:0.5048513922031709
+    plane:0.8867964561407189,
+    baseball-diamond:0.7621447630919623,
+    bridge:0.4055336223125793,
+    ground-track-field:0.6106504178923284,
+    small-vehicle:0.6676809751876145,
+    large-vehicle:0.5149858260302362,
+    ship:0.7359685211242706,
+    tennis-court:0.9083268053106571,
+    basketball-court:0.7900280506333788,
+    storage-tank:0.7926176857759603,
+    soccer-ball-field:0.5518343006559859,
+    roundabout:0.5743420301956235,
+    harbor:0.537573063205451,
+    swimming-pool:0.6545719624624141,
+    helicopter:0.4605133996867981
 
 The submitted information is :
 
-Description: RetinaNet_DOTA_2x_20200915_70.2w
+Description: RetinaNet_DOTA_CSL_2x_20200912_70.2w
 Username: liuqingiqng
 Institute: Central South University
 Emailadress: liuqingqing@csu.edu.cn
 TeamMembers: liuqingqing
+
 """
+
 

@@ -25,45 +25,42 @@ pretrain_zoo = PretrainModelZoo()
 PRETRAINED_CKPT = pretrain_zoo.pretrain_weight_path(NET_NAME, ROOT_PATH)
 TRAINED_CKPT = os.path.join(ROOT_PATH, 'output/trained_weights')
 
-# bbox head
-ANGLE_RANGE = 180
-
 # loss
 CLS_WEIGHT = 1.0
 REG_WEIGHT = 1.0 / 5.0
 REG_LOSS_MODE = None
 
-VERSION = 'RetinaNet_QDOT_2x_20200915'
+VERSION = 'RetinaNet_DOTA_2x_20201107'
 
 """
-v4 + 180
-
+RSDet-5p
+FLOPs: 860451115;    Trainable params: 33002916
 This is your result for task 1:
 
-    mAP: 0.6416730011061602
-    ap of each class:
-    plane:0.8821742942919781,
-    baseball-diamond:0.7440080093044878,
-    bridge:0.3831123976957141,
-    ground-track-field:0.6589485990451555,
-    small-vehicle:0.604798345202343,
-    large-vehicle:0.49767737835506365,
-    ship:0.6829402579754312,
-    tennis-court:0.871338023329556,
-    basketball-court:0.7813852482817419,
-    storage-tank:0.786012241585395,
-    soccer-ball-field:0.521218693379607,
-    roundabout:0.6001757439327997,
-    harbor:0.5127709102957538,
-    swimming-pool:0.5936834817142064,
-    helicopter:0.5048513922031709
+mAP: 0.6605200411622921
+ap of each class: plane:0.8870654106758245,
+baseball-diamond:0.7268503783923166,
+bridge:0.4291863271038613,
+ground-track-field:0.6491441522226533,
+small-vehicle:0.6791811400732405,
+large-vehicle:0.5291229360078313,
+ship:0.7267297470095706,
+tennis-court:0.9025198415246758,
+basketball-court:0.7698198708926544,
+storage-tank:0.8022000971627501,
+soccer-ball-field:0.5130537969212124,
+roundabout:0.5820649854991844,
+harbor:0.5364528563483577,
+swimming-pool:0.672263075454247,
+helicopter:0.5021460021460021
 
 The submitted information is :
 
-Description: RetinaNet_DOTA_2x_20200915_70.2w
-Username: liuqingiqng
-Institute: Central South University
-Emailadress: liuqingqing@csu.edu.cn
-TeamMembers: liuqingqing
+Description: RetinaNet_DOTA_2x_20201107_70.2w
+Username: SJTU-Det
+Institute: SJTU
+Emailadress: yangxue-2019-sjtu@sjtu.edu.cn
+TeamMembers: yangxue
 """
+
 

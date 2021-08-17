@@ -30,40 +30,44 @@ ANGLE_RANGE = 180
 
 # loss
 CLS_WEIGHT = 1.0
-REG_WEIGHT = 1.0 / 5.0
-REG_LOSS_MODE = None
+REG_WEIGHT = 1.0
+ANGLE_WEIGHT = 0.5
 
-VERSION = 'RetinaNet_QDOT_2x_20200915'
+# DCL
+OMEGA = 180 / 256.
+ANGLE_MODE = 1  # {0: BCL, 1: GCL}
+
+VERSION = 'RetinaNet_DOTA_DCL_G_2x_20201004'
 
 """
-v4 + 180
+v3 + period loss
 
 This is your result for task 1:
 
-    mAP: 0.6416730011061602
+    mAP: 0.6701529258132946
     ap of each class:
-    plane:0.8821742942919781,
-    baseball-diamond:0.7440080093044878,
-    bridge:0.3831123976957141,
-    ground-track-field:0.6589485990451555,
-    small-vehicle:0.604798345202343,
-    large-vehicle:0.49767737835506365,
-    ship:0.6829402579754312,
-    tennis-court:0.871338023329556,
-    basketball-court:0.7813852482817419,
-    storage-tank:0.786012241585395,
-    soccer-ball-field:0.521218693379607,
-    roundabout:0.6001757439327997,
-    harbor:0.5127709102957538,
-    swimming-pool:0.5936834817142064,
-    helicopter:0.5048513922031709
+    plane:0.8852753615354908,
+    baseball-diamond:0.7358487312228768,
+    bridge:0.397846525029383,
+    ground-track-field:0.643821813715879,
+    small-vehicle:0.67198526654463,
+    large-vehicle:0.5602121060064053,
+    ship:0.740990137738814,
+    tennis-court:0.9078254427263777,
+    basketball-court:0.7913191496695368,
+    storage-tank:0.7794879186223984,
+    soccer-ball-field:0.5560141958479111,
+    roundabout:0.6190036754323164,
+    harbor:0.5381769188233715,
+    swimming-pool:0.6618352908439461,
+    helicopter:0.5626513534400819
 
 The submitted information is :
 
-Description: RetinaNet_DOTA_2x_20200915_70.2w
-Username: liuqingiqng
-Institute: Central South University
-Emailadress: liuqingqing@csu.edu.cn
-TeamMembers: liuqingqing
-"""
+Description: RetinaNet_DOTA_DCL_G_2x_20201004_70.2w
+Username: SJTU-Det
+Institute: SJTU
+Emailadress: yangxue-2019-sjtu@sjtu.edu.cn
+TeamMembers: yangxue
 
+"""
