@@ -42,36 +42,5 @@ USE_IOU_FACTOR = True
 OMEGA = 180 / 256.  
 ANGLE_MODE = 0  # {0: BCL, 1: GCL}
 
-VERSION = 'RetinaNet_DOTA_R3Det_DCL_B_2x_20201024'
-
-"""
-FLOPs: 1263438187;    Trainable params: 37785791
-This is your result for task 1:
-
-    mAP: 0.7121184762618237
-    ap of each class:
-    plane:0.8879877475181992,
-    baseball-diamond:0.778076165652175,
-    bridge:0.46840197829363145,
-    ground-track-field:0.6584321304370467,
-    small-vehicle:0.7486973752001116,
-    large-vehicle:0.7496100108721503,
-    ship:0.8569940719256488,
-    tennis-court:0.9023482027992554,
-    basketball-court:0.7931574284009301,
-    storage-tank:0.8405654367548424,
-    soccer-ball-field:0.5659071452082054,
-    roundabout:0.6376705402201622,
-    harbor:0.577215213506967,
-    swimming-pool:0.6762310908612682,
-    helicopter:0.5404826062767616
-
-The submitted information is :
-
-Description: RetinaNet_DOTA_R3Det_DCL_B_2x_20201024_97.2w
-Username: SJTU-Det
-Institute: SJTU
-Emailadress: yangxue-2019-sjtu@sjtu.edu.cn
-TeamMembers: yangxue
-"""
+VERSION = 'RetinaNet_DOTA_QDOT_DCL_B_2x_20201024'
 

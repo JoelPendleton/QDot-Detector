@@ -105,7 +105,7 @@ class LabelMap(object):
             }
         elif self.cfgs.DATASET_NAME.startswith('QDOT'):
             name_label_map = {
-                'no-diamond': 0,
+                'back_ground': 0,
                 'diamond': 1
             }
         elif self.cfgs.DATASET_NAME.startswith('DOTA'):
