@@ -9,10 +9,10 @@ from libs.configs._base_.schedules.schedule_1x import *
 from dataloader.pretrained_weights.pretrain_zoo import PretrainModelZoo
 
 # schedule
-BATCH_SIZE = 1
+BATCH_SIZE = 4
 GPU_GROUP = "0,1,2"
 NUM_GPU = len(GPU_GROUP.strip().split(','))
-SAVE_WEIGHTS_INTE = 27000 * 2
+SAVE_WEIGHTS_INTE = 2700 * 2
 DECAY_STEP = np.array(DECAY_EPOCH, np.int32) * SAVE_WEIGHTS_INTE
 MAX_ITERATION = SAVE_WEIGHTS_INTE * MAX_EPOCH
 WARM_SETP = int(WARM_EPOCH * SAVE_WEIGHTS_INTE)
@@ -33,5 +33,5 @@ CLS_WEIGHT = 1.0
 REG_WEIGHT = 1.0 / 5.0
 REG_LOSS_MODE = None
 
-VERSION = 'RetinaNet_QDOT_2x_20200915'
+VERSION = 'RetinaNet_QDOT_2x_20210831'
 
