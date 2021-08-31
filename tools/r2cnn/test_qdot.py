@@ -9,11 +9,11 @@ import sys
 sys.path.append("../../")
 
 from libs.models.detectors.r2cnn import build_whole_network
-from tools.test_dota_base import TestDOTA
+from tools.test_qdot_base import TestQDOT
 from libs.configs import cfgs
 
 
-class TestDOTAR2CNN(TestDOTA):
+class TestDOTAR2CNN(TestQDOT):
 
     def eval(self):
         txt_name = '{}.txt'.format(self.cfgs.VERSION)
