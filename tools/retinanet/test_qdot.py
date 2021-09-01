@@ -13,7 +13,7 @@ from tools.test_qdot_base import TestQDOT
 from libs.configs import cfgs
 
 
-class TestDOTARetinaNet(TestQDOT):
+class TestQDOTRetinaNet(TestQDOT):
 
     def eval(self):
         txt_name = '{}.txt'.format(self.cfgs.VERSION)
@@ -21,14 +21,14 @@ class TestDOTARetinaNet(TestQDOT):
 
         retinanet = build_whole_network.DetectionNetworkRetinaNet(cfgs=self.cfgs,
                                                                   is_training=False)
-        self.test_dota(det_net=retinanet, real_test_img_list=real_test_img_list, txt_name=txt_name)
+        self.test_qdot(det_net=retinanet, real_test_img_list=real_test_img_list, txt_name=txt_name)
 
         if not self.args.show_box:
             os.remove(txt_name)
 
 if __name__ == '__main__':
 
-    tester = TestDOTARetinaNet(cfgs)
+    tester = TestQDOTRetinaNet(cfgs)
     tester.eval()
 
 
