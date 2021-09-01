@@ -7,12 +7,13 @@ from __future__ import division
 import os
 import sys
 import tensorflow as tf
+import time
 import cv2
+import pickle
 import numpy as np
-import math
-from tqdm import tqdm
 import argparse
-from multiprocessing import Queue, Process
+from tqdm import tqdm
+sys.path.append("../")
 
 from utils import tools
 from libs.label_name_dict.label_dict import LabelMap
@@ -24,35 +25,31 @@ from dataloader.pretrained_weights.pretrain_zoo import PretrainModelZoo
 
 
 def parse_args():
-    parser = argparse.ArgumentParser('Start testing.')
-
-    parser.add_argument('--test_dir', dest='test_dir',
-                        help='evaluate imgs dir ',
+    """
+    Parse input arguments
+    """
+    parser = argparse.ArgumentParser(description='Test QDOT')
+    parser.add_argument('--img_dir', dest='img_dir',
+                        help='images path',
                         default='/data/dataset/QDOT/test/images/', type=str)
-    parser.add_argument('--gpus', dest='gpus',
-                        help='gpu id',
-                        default='0,1,2,3,4,5,6,7', type=str)
-    parser.add_argument('--show_box', '-s', default=False,
+    parser.add_argument('--image_ext', dest='image_ext',
+                        help='image format',
+                        default='.bmp', type=str)
+    parser.add_argument('--test_annotation_path', dest='test_annotation_path',
+                        help='test annotate path',
+                        default='/data/dataset/QDOT/val/labeltxt/', type=str)
+    parser.add_argument('--gpu', dest='gpu',
+                        help='gpu index',
+                        default='0', type=str)
+    parser.add_argument('--draw_imgs', '-s', default=False,
                         action='store_true')
     parser.add_argument('--multi_scale', '-ms', default=False,
                         action='store_true')
-    parser.add_argument('--flip_img', '-f', default=False,
-                        action='store_true')
-    parser.add_argument('--num_imgs', dest='num_imgs',
-                        help='test image number',
-                        default=np.inf, type=int)
-    parser.add_argument('--h_len', dest='h_len',
-                        help='image height',
-                        default=600, type=int)
-    parser.add_argument('--w_len', dest='w_len',
-                        help='image width',
-                        default=600, type=int)
-    parser.add_argument('--h_overlap', dest='h_overlap',
-                        help='height overlap',
-                        default=150, type=int)
-    parser.add_argument('--w_overlap', dest='w_overlap',
-                        help='width overlap',
-                        default=150, type=int)
+
+    if len(sys.argv) == 1:
+        parser.print_help()
+        sys.exit(1)
+
     args = parser.parse_args()
     return args
 
@@ -65,9 +62,10 @@ class TestQDOT(object):
         label_map = LabelMap(cfgs)
         self.name_label_map, self.label_name_map = label_map.name2label(), label_map.label2name()
 
-    def worker(self, gpu_id, images, det_net, result_queue):
-        os.environ["CUDA_VISIBLE_DEVICES"] = str(gpu_id)
+    def eval_with_plac(self, img_dir, det_net, image_ext):
 
+        os.environ["CUDA_VISIBLE_DEVICES"] = self.args.gpu
+        # 1. preprocess img
         img_plac = tf.placeholder(dtype=tf.uint8, shape=[None, None, 3])  # is RGB. not BGR
         img_batch = tf.cast(img_plac, tf.float32)
 
@@ -96,273 +94,139 @@ class TestQDOT(object):
             sess.run(init_op)
             if not restorer is None:
                 restorer.restore(sess, restore_ckpt)
-                print('restore model %d ...' % gpu_id)
+                print('restore model')
 
-            for img_path in images:
+            all_boxes_r = []
+            imgs = os.listdir(img_dir)
+            pbar = tqdm(imgs)
+            for a_img_name in pbar:
 
-                # if 'P0006' not in img_path:
+                # if '1546' not in a_img_name:
                 #     continue
 
-                img = cv2.imread(img_path)
-                # img = np.load(img_path.replace('images', 'npy').replace('.png', '.npy'))
+                a_img_name = a_img_name.split(image_ext)[0]
 
-                box_res_rotate = []
-                label_res_rotate = []
-                score_res_rotate = []
+                raw_img = cv2.imread(os.path.join(img_dir,
+                                                  a_img_name + image_ext))
+                raw_h, raw_w = raw_img.shape[0], raw_img.shape[1]
 
-                imgH = img.shape[0]
-                imgW = img.shape[1]
+                det_boxes_r_all, det_scores_r_all, det_category_r_all = [], [], []
 
                 img_short_side_len_list = self.cfgs.IMG_SHORT_SIDE_LEN if isinstance(self.cfgs.IMG_SHORT_SIDE_LEN, list) else [
                     self.cfgs.IMG_SHORT_SIDE_LEN]
                 img_short_side_len_list = [img_short_side_len_list[0]] if not self.args.multi_scale else img_short_side_len_list
 
-                if imgH < self.args.h_len:
-                    temp = np.zeros([self.args.h_len, imgW, 3], np.float32)
-                    temp[0:imgH, :, :] = img
-                    img = temp
-                    imgH = self.args.h_len
-
-                if imgW < self.args.w_len:
-                    temp = np.zeros([imgH, self.args.w_len, 3], np.float32)
-                    temp[:, 0:imgW, :] = img
-                    img = temp
-                    imgW = self.args.w_len
-
-                for hh in range(0, imgH, self.args.h_len - self.args.h_overlap):
-                    if imgH - hh - 1 < self.args.h_len:
-                        hh_ = imgH - self.args.h_len
+                for short_size in img_short_side_len_list:
+                    max_len = self.cfgs.IMG_MAX_LENGTH
+                    if raw_h < raw_w:
+                        new_h, new_w = short_size, min(int(short_size * float(raw_w) / raw_h), max_len)
                     else:
-                        hh_ = hh
-                    for ww in range(0, imgW, self.args.w_len - self.args.w_overlap):
-                        if imgW - ww - 1 < self.args.w_len:
-                            ww_ = imgW - self.args.w_len
-                        else:
-                            ww_ = ww
-                        src_img = img[hh_:(hh_ + self.args.h_len), ww_:(ww_ + self.args.w_len), :]
+                        new_h, new_w = min(int(short_size * float(raw_h) / raw_w), max_len), short_size
+                    img_resize = cv2.resize(raw_img, (new_w, new_h))
 
-                        for short_size in img_short_side_len_list:
-                            max_len = self.cfgs.IMG_MAX_LENGTH
-                            if self.args.h_len < self.args.w_len:
-                                new_h, new_w = short_size, min(int(short_size * float(self.args.w_len) / self.args.h_len), max_len)
-                            else:
-                                new_h, new_w = min(int(short_size * float(self.args.h_len) / self.args.w_len), max_len), short_size
-                            img_resize = cv2.resize(src_img, (new_w, new_h))
+                    resized_img, detected_boxes, detected_scores, detected_categories = \
+                        sess.run(
+                            [img_batch, detection_boxes, detection_scores, detection_category],
+                            feed_dict={img_plac: img_resize[:, :, ::-1]}
+                        )
 
-                            resized_img, det_boxes_r_, det_scores_r_, det_category_r_ = \
-                                sess.run(
-                                    [img_batch, detection_boxes, detection_scores, detection_category],
-                                    feed_dict={img_plac: img_resize[:, :, ::-1]}
-                                )
+                    if detected_boxes.shape[0] == 0:
+                        continue
+                    resized_h, resized_w = resized_img.shape[1], resized_img.shape[2]
+                    detected_boxes = forward_convert(detected_boxes, False)
+                    detected_boxes[:, 0::2] *= (raw_w / resized_w)
+                    detected_boxes[:, 1::2] *= (raw_h / resized_h)
 
-                            resized_h, resized_w = resized_img.shape[1], resized_img.shape[2]
-                            src_h, src_w = src_img.shape[0], src_img.shape[1]
-
-                            if len(det_boxes_r_) > 0:
-                                det_boxes_r_ = forward_convert(det_boxes_r_, False)
-                                det_boxes_r_[:, 0::2] *= (src_w / resized_w)
-                                det_boxes_r_[:, 1::2] *= (src_h / resized_h)
-
-                                for ii in range(len(det_boxes_r_)):
-                                    box_rotate = det_boxes_r_[ii]
-                                    box_rotate[0::2] = box_rotate[0::2] + ww_
-                                    box_rotate[1::2] = box_rotate[1::2] + hh_
-                                    box_res_rotate.append(box_rotate)
-                                    label_res_rotate.append(det_category_r_[ii])
-                                    score_res_rotate.append(det_scores_r_[ii])
-
-                            if self.args.flip_img:
-                                det_boxes_r_flip, det_scores_r_flip, det_category_r_flip = \
-                                    sess.run(
-                                        [detection_boxes, detection_scores, detection_category],
-                                        feed_dict={img_plac: cv2.flip(img_resize, flipCode=1)[:, :, ::-1]}
-                                    )
-                                if len(det_boxes_r_flip) > 0:
-                                    det_boxes_r_flip = forward_convert(det_boxes_r_flip, False)
-                                    det_boxes_r_flip[:, 0::2] *= (src_w / resized_w)
-                                    det_boxes_r_flip[:, 1::2] *= (src_h / resized_h)
-
-                                    for ii in range(len(det_boxes_r_flip)):
-                                        box_rotate = det_boxes_r_flip[ii]
-                                        box_rotate[0::2] = (src_w - box_rotate[0::2]) + ww_
-                                        box_rotate[1::2] = box_rotate[1::2] + hh_
-                                        box_res_rotate.append(box_rotate)
-                                        label_res_rotate.append(det_category_r_flip[ii])
-                                        score_res_rotate.append(det_scores_r_flip[ii])
-
-                                det_boxes_r_flip, det_scores_r_flip, det_category_r_flip = \
-                                    sess.run(
-                                        [detection_boxes, detection_scores, detection_category],
-                                        feed_dict={img_plac: cv2.flip(img_resize, flipCode=0)[:, :, ::-1]}
-                                    )
-                                if len(det_boxes_r_flip) > 0:
-                                    det_boxes_r_flip = forward_convert(det_boxes_r_flip, False)
-                                    det_boxes_r_flip[:, 0::2] *= (src_w / resized_w)
-                                    det_boxes_r_flip[:, 1::2] *= (src_h / resized_h)
-
-                                    for ii in range(len(det_boxes_r_flip)):
-                                        box_rotate = det_boxes_r_flip[ii]
-                                        box_rotate[0::2] = box_rotate[0::2] + ww_
-                                        box_rotate[1::2] = (src_h - box_rotate[1::2]) + hh_
-                                        box_res_rotate.append(box_rotate)
-                                        label_res_rotate.append(det_category_r_flip[ii])
-                                        score_res_rotate.append(det_scores_r_flip[ii])
-
-                box_res_rotate = np.array(box_res_rotate)
-                label_res_rotate = np.array(label_res_rotate)
-                score_res_rotate = np.array(score_res_rotate)
+                    det_boxes_r_all.extend(detected_boxes)
+                    det_scores_r_all.extend(detected_scores)
+                    det_category_r_all.extend(detected_categories)
+                det_boxes_r_all = np.array(det_boxes_r_all)
+                det_scores_r_all = np.array(det_scores_r_all)
+                det_category_r_all = np.array(det_category_r_all)
 
                 box_res_rotate_ = []
                 label_res_rotate_ = []
                 score_res_rotate_ = []
-                threshold = {'diamond': 0.5, 'background': 0.5}
 
-                for sub_class in range(1, self.cfgs.CLASS_NUM + 1):
-                    index = np.where(label_res_rotate == sub_class)[0]
-                    if len(index) == 0:
-                        continue
-                    tmp_boxes_r = box_res_rotate[index]
-                    tmp_label_r = label_res_rotate[index]
-                    tmp_score_r = score_res_rotate[index]
+                if det_scores_r_all.shape[0] != 0:
+                    for sub_class in range(1, self.cfgs.CLASS_NUM + 1):
+                        index = np.where(det_category_r_all == sub_class)[0]
+                        if len(index) == 0:
+                            continue
+                        tmp_boxes_r = det_boxes_r_all[index]
+                        tmp_label_r = det_category_r_all[index]
+                        tmp_score_r = det_scores_r_all[index]
+                        if self.args.multi_scale:
+                            tmp_boxes_r_ = backward_convert(tmp_boxes_r, False)
 
-                    tmp_boxes_r_ = backward_convert(tmp_boxes_r, False)
+                            # try:
+                            #     inx = nms_rotate.nms_rotate_cpu(boxes=np.array(tmp_boxes_r_),
+                            #                                     scores=np.array(tmp_score_r),
+                            #                                     iou_threshold=self.cfgs.NMS_IOU_THRESHOLD,
+                            #                                     max_output_size=5000)
+                            # except:
+                            tmp_boxes_r_ = np.array(tmp_boxes_r_)
+                            tmp = np.zeros([tmp_boxes_r_.shape[0], tmp_boxes_r_.shape[1] + 1])
+                            tmp[:, 0:-1] = tmp_boxes_r_
+                            tmp[:, -1] = np.array(tmp_score_r)
+                            # Note: the IoU of two same rectangles is 0, which is calculated by rotate_gpu_nms
+                            jitter = np.zeros([tmp_boxes_r_.shape[0], tmp_boxes_r_.shape[1] + 1])
+                            jitter[:, 0] += np.random.rand(tmp_boxes_r_.shape[0], ) / 1000
+                            inx = rotate_gpu_nms(np.array(tmp, np.float32) + np.array(jitter, np.float32),
+                                                 float(self.cfgs.NMS_IOU_THRESHOLD), 0)
+                        else:
+                            inx = np.arange(0, tmp_score_r.shape[0])
 
-                    # try:
-                    #     inx = nms_rotate.nms_rotate_cpu(boxes=np.array(tmp_boxes_r_),
-                    #                                     scores=np.array(tmp_score_r),
-                    #                                     iou_threshold=threshold[self.label_name_map[sub_class]],
-                    #                                     max_output_size=5000)
-                    #
-                    # except:
-                    tmp_boxes_r_ = np.array(tmp_boxes_r_)
-                    tmp = np.zeros([tmp_boxes_r_.shape[0], tmp_boxes_r_.shape[1] + 1])
-                    tmp[:, 0:-1] = tmp_boxes_r_
-                    tmp[:, -1] = np.array(tmp_score_r)
-                    # Note: the IoU of two same rectangles is 0, which is calculated by rotate_gpu_nms
-                    jitter = np.zeros([tmp_boxes_r_.shape[0], tmp_boxes_r_.shape[1] + 1])
-                    jitter[:, 0] += np.random.rand(tmp_boxes_r_.shape[0], ) / 1000
-                    inx = rotate_gpu_nms(np.array(tmp, np.float32) + np.array(jitter, np.float32),
-                                         float(threshold[self.label_name_map[sub_class]]), 0)
+                        box_res_rotate_.extend(np.array(tmp_boxes_r)[inx])
+                        score_res_rotate_.extend(np.array(tmp_score_r)[inx])
+                        label_res_rotate_.extend(np.array(tmp_label_r)[inx])
 
-                    box_res_rotate_.extend(np.array(tmp_boxes_r)[inx])
-                    score_res_rotate_.extend(np.array(tmp_score_r)[inx])
-                    label_res_rotate_.extend(np.array(tmp_label_r)[inx])
+                if len(box_res_rotate_) == 0:
+                    all_boxes_r.append(np.array([]))
+                    continue
 
-                result_dict = {'boxes': np.array(box_res_rotate_), 'scores': np.array(score_res_rotate_),
-                               'labels': np.array(label_res_rotate_), 'image_id': img_path}
-                result_queue.put_nowait(result_dict)
+                det_boxes_r_ = np.array(box_res_rotate_)
+                det_scores_r_ = np.array(score_res_rotate_)
+                det_category_r_ = np.array(label_res_rotate_)
 
-    def test_qdot(self, det_net, real_test_img_list, txt_name):
+                if self.args.draw_imgs:
+                    detected_indices = det_scores_r_ >= self.cfgs.VIS_SCORE
+                    detected_scores = det_scores_r_[detected_indices]
+                    detected_boxes = det_boxes_r_[detected_indices]
+                    detected_categories = det_category_r_[detected_indices]
 
-        save_path = os.path.join('./test_qdot', self.cfgs.VERSION)
+                    detected_boxes = backward_convert(detected_boxes, False)
 
-        nr_records = len(real_test_img_list)
-        pbar = tqdm(total=nr_records)
-        gpu_num = len(self.args.gpus.strip().split(','))
+                    drawer = DrawBox(self.cfgs)
 
-        nr_image = math.ceil(nr_records / gpu_num)
-        result_queue = Queue(5000)
-        procs = []
+                    det_detections_r = drawer.draw_boxes_with_label_and_scores(raw_img[:, :, ::-1],
+                                                                               boxes=detected_boxes,
+                                                                               labels=detected_categories,
+                                                                               scores=detected_scores,
+                                                                               method=1,
+                                                                               in_graph=True)
 
-        for i, gpu_id in enumerate(self.args.gpus.strip().split(',')):
-            start = i * nr_image
-            end = min(start + nr_image, nr_records)
-            split_records = real_test_img_list[start:end]
-            proc = Process(target=self.worker, args=(int(gpu_id), split_records, det_net, result_queue))
-            print('process:%d, start:%d, end:%d' % (i, start, end))
-            proc.start()
-            procs.append(proc)
+                    save_dir = os.path.join('test_QDOT', self.cfgs.VERSION, 'QDOT_img_vis')
+                    tools.makedirs(save_dir)
 
-        for i in range(nr_records):
-            res = result_queue.get()
+                    cv2.imwrite(save_dir + '/{}.png'.format(a_img_name),
+                                det_detections_r[:, :, ::-1])
 
-            if self.args.show_box:
+                det_boxes_r_ = backward_convert(det_boxes_r_, False)
 
-                nake_name = res['image_id'].split('/')[-1]
-                tools.makedirs(os.path.join(save_path, 'qdot_img_vis'))
-                draw_path = os.path.join(save_path, 'qdot_img_vis', nake_name)
+                x_c, y_c, w, h, theta = det_boxes_r_[:, 0], det_boxes_r_[:, 1], det_boxes_r_[:, 2], \
+                                        det_boxes_r_[:, 3], det_boxes_r_[:, 4]
 
-                draw_img = np.array(cv2.imread(res['image_id']), np.float32)
-                detected_boxes = backward_convert(res['boxes'], with_label=False)
+                boxes_r = np.transpose(np.stack([x_c, y_c, w, h, theta]))
+                dets_r = np.hstack((det_category_r_.reshape(-1, 1),
+                                    det_scores_r_.reshape(-1, 1),
+                                    boxes_r))
+                all_boxes_r.append(dets_r)
 
-                detected_indices = res['scores'] >= self.cfgs.VIS_SCORE
-                detected_scores = res['scores'][detected_indices]
-                detected_boxes = detected_boxes[detected_indices]
-                detected_categories = res['labels'][detected_indices]
+                pbar.set_description("Eval image %s" % a_img_name)
 
-                drawer = DrawBox(self.cfgs)
-
-                final_detections = drawer.draw_boxes_with_label_and_scores(draw_img,
-                                                                           boxes=detected_boxes,
-                                                                           labels=detected_categories,
-                                                                           scores=detected_scores,
-                                                                           method=1,
-                                                                           is_csl=True,
-                                                                           in_graph=False)
-                cv2.imwrite(draw_path, final_detections)
-
-            else:
-                CLASS_QDOT = self.name_label_map.keys()
-                write_handle = {}
-
-                tools.makedirs(os.path.join(save_path, 'qdot_res'))
-                for sub_class in CLASS_QDOT:
-                    if sub_class == 'back_ground':
-                        continue
-                    write_handle[sub_class] = open(os.path.join(save_path, 'qdot_res', 'Task1_%s.txt' % sub_class), 'a+')
-
-                for i, rbox in enumerate(res['boxes']):
-                    command = '%s %.3f %.1f %.1f %.1f %.1f %.1f %.1f %.1f %.1f\n' % (res['image_id'].split('/')[-1].split('.')[0],
-                                                                                     res['scores'][i],
-                                                                                     rbox[0], rbox[1], rbox[2], rbox[3],
-                                                                                     rbox[4], rbox[5], rbox[6], rbox[7],)
-                    write_handle[self.label_name_map[res['labels'][i]]].write(command)
-
-                for sub_class in CLASS_QDOT:
-                    if sub_class == 'back_ground':
-                        continue
-                    write_handle[sub_class].close()
-
-                fw = open(txt_name, 'a+')
-                fw.write('{}\n'.format(res['image_id'].split('/')[-1]))
-                fw.close()
-
-            pbar.set_description("Test image %s" % res['image_id'].split('/')[-1])
-
-            pbar.update(1)
-
-        for p in procs:
-            p.join()
-
-    def get_test_image(self):
-        txt_name = '{}.txt'.format(self.cfgs.VERSION)
-        if not self.args.show_box:
-            if not os.path.exists(txt_name):
-                fw = open(txt_name, 'w')
-                fw.close()
-
-            fr = open(txt_name, 'r')
-            img_filter = fr.readlines()
-            print('****************************' * 3)
-            print('Already tested imgs:', img_filter)
-            print('****************************' * 3)
-            fr.close()
-
-            test_imgname_list = [os.path.join(self.args.test_dir, img_name) for img_name in os.listdir(self.args.test_dir)
-                                 if img_name.endswith(('.jpg', '.png', '.jpeg', '.tif', '.tiff')) and
-                                 (img_name + '\n' not in img_filter)]
-        else:
-            test_imgname_list = [os.path.join(self.args.test_dir, img_name) for img_name in os.listdir(self.args.test_dir)
-                                 if img_name.endswith(('.jpg', '.png', '.jpeg', '.tif', '.tiff'))]
-
-        assert len(test_imgname_list) != 0, 'test_dir has no imgs there.' \
-                                            ' Note that, we only support img format of (.jpg, .png, and .tiff) '
-
-        if self.args.num_imgs == np.inf:
-            real_test_img_list = test_imgname_list
-        else:
-            real_test_img_list = test_imgname_list[: self.args.num_imgs]
-
-        return real_test_img_list
+            # fw1 = open(cfgs.VERSION + '_detections_r.pkl', 'wb')
+            # pickle.dump(all_boxes_r, fw1)
+            return all_boxes_r
 
 
