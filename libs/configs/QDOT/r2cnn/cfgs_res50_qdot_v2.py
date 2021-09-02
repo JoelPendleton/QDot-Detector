@@ -13,7 +13,7 @@ BATCH_SIZE = 1
 GPU_GROUP = "0,1,2,3"
 NUM_GPU = len(GPU_GROUP.strip().split(','))
 LR = 0.001 * BATCH_SIZE * NUM_GPU
-SAVE_WEIGHTS_INTE = 2700 * 2
+SAVE_WEIGHTS_INTE = 5000 * 2
 DECAY_STEP = np.array(DECAY_EPOCH, np.int32) * SAVE_WEIGHTS_INTE
 MAX_ITERATION = SAVE_WEIGHTS_INTE * MAX_EPOCH
 WARM_SETP = int(WARM_EPOCH * SAVE_WEIGHTS_INTE)
@@ -27,5 +27,5 @@ pretrain_zoo = PretrainModelZoo()
 PRETRAINED_CKPT = pretrain_zoo.pretrain_weight_path(NET_NAME, ROOT_PATH)
 TRAINED_CKPT = os.path.join(ROOT_PATH, 'output/trained_weights')
 
-VERSION = 'FPN_Res50D_QDOT_20210901'
+VERSION = 'FPN_Res50D_QDOT_20210902'
 
