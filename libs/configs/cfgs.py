@@ -12,24 +12,12 @@ from dataloader.pretrained_weights.pretrain_zoo import PretrainModelZoo
 BATCH_SIZE = 1
 GPU_GROUP = "0,1,2,3"
 NUM_GPU = len(GPU_GROUP.strip().split(','))
-LR = 1e-3
 SAVE_WEIGHTS_INTE = 5000 * 2
 DECAY_STEP = np.array(DECAY_EPOCH, np.int32) * SAVE_WEIGHTS_INTE
 MAX_ITERATION = SAVE_WEIGHTS_INTE * MAX_EPOCH
 WARM_SETP = int(WARM_EPOCH * SAVE_WEIGHTS_INTE)
 
 # dataset
-DATASET_NAME = 'QDOT'
-IMG_SHORT_SIDE_LEN = 300
-IMG_MAX_LENGTH = 300
-CLASS_NUM = 1
-
-# data augmentation
-IMG_ROTATE = True
-RGB2GRAY = True
-VERTICAL_FLIP = True
-HORIZONTAL_FLIP = True
-IMAGE_PYRAMID = False
 
 # model
 # backbone
@@ -39,15 +27,40 @@ TRAINED_CKPT = os.path.join(ROOT_PATH, 'output/trained_weights')
 
 # loss
 CLS_WEIGHT = 1.0
-REG_WEIGHT = 1.0
+REG_WEIGHT = 1.0 / 5.0
 REG_LOSS_MODE = None
 
-VERSION = 'RetinaNet_QDOT_2x_20210902'
+VERSION = 'RetinaNet_QDOT_v1_20210902'
 
 """
-02/09/21 at 18:41
+RetinaNet-H + 90
+This is your result for task 1:
 
-cls : diamond|| Recall: 0.7965260545905707 || Precison: 0.37066974595842955|| AP: 0.6992939356348402
-F1:0.7800504693722755 P:0.8827586206896552 R:0.6987593052109181
-mAP is : 0.6992939356348402
+    mAP: 0.6572506703256068
+    ap of each class:
+    plane:0.8831119481871824,
+    baseball-diamond:0.7554052281871614,
+    bridge:0.4217303911789575,
+    ground-track-field:0.6707230071220774,
+    small-vehicle:0.6592650965532021,
+    large-vehicle:0.5111005162900164,
+    ship:0.7261407293679227,
+    tennis-court:0.9071013790480128,
+    basketball-court:0.7822207883168055,
+    storage-tank:0.7883844023962553,
+    soccer-ball-field:0.544082059014562,
+    roundabout:0.6200017658693254,
+    harbor:0.5324027345069116,
+    swimming-pool:0.6718903394664805,
+    helicopter:0.3851996693792289
+
+The submitted information is :
+
+Description: RetinaNet_DOTA_2x_20190530_108w
+Username: DetectionTeamCSU
+Institute: CSU
+Emailadress: yangxue@csu.edu.cn
+TeamMembers: YangXue
+
 """
+
