@@ -3,8 +3,8 @@ from __future__ import division, print_function, absolute_import
 
 import numpy as np
 
-from libs.configs._base_.models.faster_rcnn_r50_fpn import *
-from libs.configs._base_.datasets.dota_detection import *
+from libs.configs._base_.models.retinanet_r50_fpn import *
+from libs.configs._base_.datasets.qdot_detection import *
 from libs.configs._base_.schedules.schedule_1x import *
 from dataloader.pretrained_weights.pretrain_zoo import PretrainModelZoo
 
@@ -12,13 +12,24 @@ from dataloader.pretrained_weights.pretrain_zoo import PretrainModelZoo
 BATCH_SIZE = 1
 GPU_GROUP = "0,1,2,3"
 NUM_GPU = len(GPU_GROUP.strip().split(','))
-LR = 0.0003
-SAVE_WEIGHTS_INTE = 27000
+LR = 1e-3
+SAVE_WEIGHTS_INTE = 1000 * 2
 DECAY_STEP = np.array(DECAY_EPOCH, np.int32) * SAVE_WEIGHTS_INTE
 MAX_ITERATION = SAVE_WEIGHTS_INTE * MAX_EPOCH
 WARM_SETP = int(WARM_EPOCH * SAVE_WEIGHTS_INTE)
 
 # dataset
+DATASET_NAME = 'QDOT'
+IMG_SHORT_SIDE_LEN = 300
+IMG_MAX_LENGTH = 300
+CLASS_NUM = 1
+
+# data augmentation
+IMG_ROTATE = True
+RGB2GRAY = True
+VERTICAL_FLIP = True
+HORIZONTAL_FLIP = True
+IMAGE_PYRAMID = False
 
 # model
 # backbone
@@ -26,25 +37,10 @@ pretrain_zoo = PretrainModelZoo()
 PRETRAINED_CKPT = pretrain_zoo.pretrain_weight_path(NET_NAME, ROOT_PATH)
 TRAINED_CKPT = os.path.join(ROOT_PATH, 'output/trained_weights')
 
-# neck
-FPN_CHANNEL = 256
-
-# rpn head
-ANCHOR_MODE = 'R'
-ANCHOR_RATIOS = [0.5, 1., 2.0, 1/4.0, 4.0]
-
-# roi sample
-FAST_RCNN_MINIBATCH_SIZE = 256
-
 # loss
-RPN_LOCATION_LOSS_WEIGHT = 1 / 7
-RPN_CLASSIFICATION_LOSS_WEIGHT = 2.0
-FAST_RCNN_LOCATION_LOSS_WEIGHT = 4.0
-FAST_RCNN_CLASSIFICATION_LOSS_WEIGHT = 2.0
+CLS_WEIGHT = 1.0
+REG_WEIGHT = 1.0
+REG_LOSS_MODE = None
 
-VERSION = 'FPN_Res50D_DOTA_RRPN_1x_20210601'
+VERSION = 'RetinaNet_QDOT_2x_20210902'
 
-"""
-RRPN
-FLOPs: 1209944239;    Trainable params: 41215026
-"""
