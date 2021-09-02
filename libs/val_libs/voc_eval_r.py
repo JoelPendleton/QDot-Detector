@@ -89,10 +89,10 @@ class EVAL(object):
       # obj_struct['difficult'] = int(obj.find('difficult').text)
       obj_struct['difficult'] = 0
       bbox = obj.find('bndbox')
-      rbox = [eval(bbox.find('x1').text), eval(bbox.find('y1').text),
-              eval(bbox.find('x2').text), eval(bbox.find('y2').text),
-              eval(bbox.find('x3').text), eval(bbox.find('y3').text),
-              eval(bbox.find('x4').text), eval(bbox.find('y4').text)]
+      rbox = [eval(bbox.find('x0').text), eval(bbox.find('y0').text),
+              eval(bbox.find('x1').text), eval(bbox.find('y1').text),
+              eval(bbox.find('x2').text), eval(bbox.find('y3').text),
+              eval(bbox.find('x3').text), eval(bbox.find('y3').text)]
       rbox = np.array([rbox], np.float32)
       rbox = coordinate_convert.backward_convert(rbox, with_label=False)
       obj_struct['bbox'] = rbox
