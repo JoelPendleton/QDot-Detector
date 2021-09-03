@@ -34,14 +34,12 @@ VERSION = 'RetinaNet_QDOT_v1_20210902'
 
 """
 RetinaNet-H + 90
+
 FLOPs: 1019905461;    Trainable params: 32373651
 
-rotation eval:
-Writing diamond VOC resutls file
 cls : diamond|| Recall: 0.7305210918114144 || Precison: 0.46057571964956195|| AP: 0.6571550009364164
 F1:0.6840514544377722 P:0.7376578645235362 R:0.6377171215880894
 mAP is : 0.6571550009364164
-
 
 """
 

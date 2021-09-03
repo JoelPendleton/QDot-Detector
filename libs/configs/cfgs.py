@@ -30,39 +30,12 @@ ANCHOR_RATIOS = [1, 1 / 3., 3.]
 # loss
 CLS_WEIGHT = 1.0
 REG_WEIGHT = 1.0 / 5.0
-REG_LOSS_MODE = None
+REG_LOSS_MODE = 1 # IoU-Smooth L1
 
-VERSION = 'RetinaNet_QDOT_v3_20210903'
+VERSION = 'RetinaNet_QDOT_v4_20210903'
 
 """
-RetinaNet-R + 90
-FLOPs: 512292465;    Trainable params: 34524216
-This is your result for task 1:
+RetinaNet-R + IoU-Smooth L1
 
-    mAP: 0.6725084704054188
-    ap of each class:
-    plane:0.8928344652701296,
-    baseball-diamond:0.7304554873104306,
-    bridge:0.34861749965443384,
-    ground-track-field:0.6454757711323661,
-    small-vehicle:0.7358328451641203,
-    large-vehicle:0.7333202044070867,
-    ship:0.829537451899966,
-    tennis-court:0.8991725822927377,
-    basketball-court:0.7414258616115545,
-    storage-tank:0.7907933807503915,
-    soccer-ball-field:0.5718970329039421,
-    roundabout:0.5956995083477648,
-    harbor:0.51027563083865,
-    swimming-pool:0.6614448075148596,
-    helicopter:0.4008445269828484
-
-The submitted information is :
-
-Description: RetinaNet_DOTA_1x_20210610_35.1w
-Username: SJTU-Det
-Institute: SJTU
-Emailadress: yangxue-2019-sjtu@sjtu.edu.cn
-TeamMembers: yangxue
 """
 
