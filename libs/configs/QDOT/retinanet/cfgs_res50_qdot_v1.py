@@ -34,33 +34,14 @@ VERSION = 'RetinaNet_QDOT_v1_20210902'
 
 """
 RetinaNet-H + 90
-This is your result for task 1:
+FLOPs: 1019905461;    Trainable params: 32373651
 
-    mAP: 0.6572506703256068
-    ap of each class:
-    plane:0.8831119481871824,
-    baseball-diamond:0.7554052281871614,
-    bridge:0.4217303911789575,
-    ground-track-field:0.6707230071220774,
-    small-vehicle:0.6592650965532021,
-    large-vehicle:0.5111005162900164,
-    ship:0.7261407293679227,
-    tennis-court:0.9071013790480128,
-    basketball-court:0.7822207883168055,
-    storage-tank:0.7883844023962553,
-    soccer-ball-field:0.544082059014562,
-    roundabout:0.6200017658693254,
-    harbor:0.5324027345069116,
-    swimming-pool:0.6718903394664805,
-    helicopter:0.3851996693792289
+rotation eval:
+Writing diamond VOC resutls file
+cls : diamond|| Recall: 0.7305210918114144 || Precison: 0.46057571964956195|| AP: 0.6571550009364164
+F1:0.6840514544377722 P:0.7376578645235362 R:0.6377171215880894
+mAP is : 0.6571550009364164
 
-The submitted information is :
-
-Description: RetinaNet_DOTA_2x_20190530_108w
-Username: DetectionTeamCSU
-Institute: CSU
-Emailadress: yangxue@csu.edu.cn
-TeamMembers: YangXue
 
 """
 
