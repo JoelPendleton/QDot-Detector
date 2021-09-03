@@ -10,7 +10,7 @@ from dataloader.pretrained_weights.pretrain_zoo import PretrainModelZoo
 
 # schedule
 BATCH_SIZE = 1
-GPU_GROUP = "0"
+GPU_GROUP = "0,1,2,3"
 NUM_GPU = len(GPU_GROUP.strip().split(','))
 SAVE_WEIGHTS_INTE = 5000 * 2
 DECAY_STEP = np.array(DECAY_EPOCH, np.int32) * SAVE_WEIGHTS_INTE
