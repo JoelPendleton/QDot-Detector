@@ -30,32 +30,6 @@ VERSION = 'FPN_Res50D_QDOT_v1_20210903'
 
 """
 R2CNN
-FLOPs: 1024153266;    Trainable params: 41772682
-This is your result for task 1:
 
-    mAP: 0.7227414456963894
-    ap of each class:
-    plane:0.8954291131230108,
-    baseball-diamond:0.7615013248230833,
-    bridge:0.47589589239010427,
-    ground-track-field:0.6484503831218632,
-    small-vehicle:0.7616171143029637,
-    large-vehicle:0.7395101403930869,
-    ship:0.8587426481796258,
-    tennis-court:0.9022025499507798,
-    basketball-court:0.8327346869026073,
-    storage-tank:0.8431585743608815,
-    soccer-ball-field:0.5106006620292729,
-    roundabout:0.6561468034665185,
-    harbor:0.6530002955426998,
-    swimming-pool:0.6823392612570894,
-    helicopter:0.6197922356022552
 
-The submitted information is :
-
-Description: FPN_Res50D_DOTA_1x_20201031_37.8w
-Username: SJTU-Det
-Institute: SJTU
-Emailadress: yangxue-2019-sjtu@sjtu.edu.cn
-TeamMembers: yangxue
 """
