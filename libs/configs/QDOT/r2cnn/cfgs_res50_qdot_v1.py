@@ -31,5 +31,7 @@ VERSION = 'FPN_Res50D_QDOT_v1_20210903'
 """
 R2CNN
 
+FLOPs: 1235505473;    Trainable params: 41692732
+
 
 """
