@@ -173,7 +173,7 @@ class TestQDOT(object):
                             jitter = np.zeros([tmp_boxes_r_.shape[0], tmp_boxes_r_.shape[1] + 1])
                             jitter[:, 0] += np.random.rand(tmp_boxes_r_.shape[0], ) / 1000
                             inx = rotate_gpu_nms(np.array(tmp, np.float32) + np.array(jitter, np.float32),
-                                                 float(threshold[self.label_name_map[sub_class]]), 0)
+                                                 float(self.cfgs.NMS_IOU_THRESHOLD), 0)
                         else:
                             inx = np.arange(0, tmp_score_r.shape[0])
 

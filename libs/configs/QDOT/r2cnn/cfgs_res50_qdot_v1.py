@@ -21,6 +21,7 @@ WARM_SETP = int(WARM_EPOCH * SAVE_WEIGHTS_INTE)
 # dataset
 
 # model
+NMS_IOU_THRESHOLD = RPN_NMS_IOU_THRESHOLD # in faster_rcnn_r50_fpn
 # backbone
 pretrain_zoo = PretrainModelZoo()
 PRETRAINED_CKPT = pretrain_zoo.pretrain_weight_path(NET_NAME, ROOT_PATH)
