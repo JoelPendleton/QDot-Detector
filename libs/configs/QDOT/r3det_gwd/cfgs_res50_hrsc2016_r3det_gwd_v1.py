@@ -23,9 +23,6 @@ IMG_SHORT_SIDE_LEN = 300
 IMG_MAX_LENGTH = 300
 CLASS_NUM = 1
 
-METHOD = 'H'
-
-
 # model
 pretrain_zoo = PretrainModelZoo()
 PRETRAINED_CKPT = pretrain_zoo.pretrain_weight_path(NET_NAME, ROOT_PATH)
