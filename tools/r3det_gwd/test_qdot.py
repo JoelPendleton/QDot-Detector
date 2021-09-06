@@ -16,12 +16,12 @@ from tqdm import tqdm
 sys.path.append("../../")
 
 from libs.models.detectors.r3det_gwd import build_whole_network
-from tools.test_hrsc2016_base import TestHRSC2016
+from tools.test_qdot_base import TestQDOT
 from libs.configs import cfgs
 from libs.val_libs.voc_eval_r import EVAL
 
 
-class TestHRSC2016R3DetGWD(TestHRSC2016):
+class TestQDOTR3DetGWD(TestQDOT):
 
     def eval(self):
         r3det_gwd = build_whole_network.DetectionNetworkR3DetGWD(cfgs=self.cfgs,
@@ -48,5 +48,5 @@ class TestHRSC2016R3DetGWD(TestHRSC2016):
 
 if __name__ == '__main__':
 
-    tester = TestHRSC2016R3DetGWD(cfgs)
+    tester = TestQDOTR3DetGWD(cfgs)
     tester.eval()
