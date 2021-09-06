@@ -23,12 +23,8 @@ IMG_SHORT_SIDE_LEN = 300
 IMG_MAX_LENGTH = 300
 CLASS_NUM = 1
 
-# data augmentation
-IMG_ROTATE = True
-RGB2GRAY = True
-VERTICAL_FLIP = True
-HORIZONTAL_FLIP = True
-IMAGE_PYRAMID = False
+METHOD = 'H'
+
 
 # model
 pretrain_zoo = PretrainModelZoo()
