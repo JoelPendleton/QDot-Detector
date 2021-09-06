@@ -4,7 +4,7 @@ from __future__ import division, print_function, absolute_import
 import numpy as np
 
 from libs.configs._base_.models.retinanet_r50_fpn import *
-from libs.configs._base_.datasets.dota_detection import *
+from libs.configs._base_.datasets.qdot_detection import *
 from libs.configs._base_.schedules.schedule_1x import *
 from dataloader.pretrained_weights.pretrain_zoo import PretrainModelZoo
 
