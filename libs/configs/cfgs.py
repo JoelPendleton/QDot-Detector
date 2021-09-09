@@ -12,7 +12,7 @@ from dataloader.pretrained_weights.pretrain_zoo import PretrainModelZoo
 BATCH_SIZE = 1  # r3det only support 1
 GPU_GROUP = '0,1,2,3'
 NUM_GPU = len(GPU_GROUP.strip().split(','))
-SAVE_WEIGHTS_INTE = 5000 * 2
+SAVE_WEIGHTS_INTE = 4000 * 2
 DECAY_STEP = np.array(DECAY_EPOCH, np.int32) * SAVE_WEIGHTS_INTE
 MAX_ITERATION = SAVE_WEIGHTS_INTE * MAX_EPOCH
 WARM_SETP = int(WARM_EPOCH * SAVE_WEIGHTS_INTE)
