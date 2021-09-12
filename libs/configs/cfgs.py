@@ -27,7 +27,7 @@ pretrain_zoo = PretrainModelZoo()
 PRETRAINED_CKPT = pretrain_zoo.pretrain_weight_path(NET_NAME, ROOT_PATH)
 TRAINED_CKPT = os.path.join(ROOT_PATH, 'output/trained_weights')
 
-VERSION = 'FPN_Res50D_QDOT_v1_20210911'
+VERSION = 'FPN_Res50D_QDOT_v2_20210911'
 
 """
 R2CNN
