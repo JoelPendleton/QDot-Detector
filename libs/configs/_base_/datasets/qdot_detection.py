@@ -11,7 +11,7 @@ IMG_MAX_LENGTH = 500
 
 # data augmentation
 IMG_ROTATE = True
-RGB2GRAY = True
+RGB2GRAY = False
 VERTICAL_FLIP = True
 HORIZONTAL_FLIP = True
-IMAGE_PYRAMID = True
+IMAGE_PYRAMID = False
