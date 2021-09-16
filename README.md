@@ -8,38 +8,6 @@ UranusDet is maintained by [Xue Yang](https://yangxue0827.github.io/) with Shang
 
 **Papers and codes related to remote sensing/aerial image detection: [DOTA-DOAI](https://github.com/SJTU-Thinklab-Det/DOTA-DOAI) <img src="https://img.shields.io/github/stars/SJTU-Thinklab-Det/DOTA-DOAI?style=social" />.**      
 
-Techniques:
-- [x] Dataset: DOTA, HRSC2016, ICDAR2015, ICDAR2017 MLT, MSRA-TD500, UCAS-AOD, FDDB, OHD-SJTU, SSDD++, Total-Text
-- [x] Baackbone: [ResNet](https://arxiv.org/abs/1512.03385), [MobileNetV2](https://arxiv.org/abs/1801.04381), [EfficientNet](https://arxiv.org/abs/1905.11946), [DarkNet53](https://arxiv.org/abs/1506.02640)
-- [x] Neck: [FPN](https://arxiv.org/abs/1708.02002), [BiFPN](https://arxiv.org/abs/1911.09070)
-- [x] Detectors: 
-  - [x] [R<sup>2</sup>CNN (Faster-RCNN-H)](https://arxiv.org/abs/1706.09579): [R2CNN_Faster-RCNN_Tensorflow](https://github.com/DetectionTeamUCAS/R2CNN_Faster-RCNN_Tensorflow) <img src="https://img.shields.io/github/stars/DetectionTeamUCAS/R2CNN_Faster-RCNN_Tensorflow?style=social" />, [DOTA-DOAI](https://github.com/SJTU-Thinklab-Det/DOTA-DOAI) <img src="https://img.shields.io/github/stars/SJTU-Thinklab-Det/DOTA-DOAI?style=social" />, [R2CNN_FPN_Tensorflow (Deprecated)](https://github.com/yangxue0827/R2CNN_FPN_Tensorflow) <img src="https://img.shields.io/github/stars/yangxue0827/R2CNN_FPN_Tensorflow?style=social" />
-  - [x] [RRPN (Faster-RCNN-R)](https://arxiv.org/pdf/1703.01086): [TF code](https://github.com/DetectionTeamUCAS/RRPN_Faster-RCNN_Tensorflow) <img src="https://img.shields.io/github/stars/DetectionTeamUCAS/RRPN_Faster-RCNN_Tensorflow?style=social" />
-  - [x] [SCRDet **(ICCV19)**](https://arxiv.org/abs/1811.07126): [R<sup>2</sup>CNN++](https://github.com/DetectionTeamUCAS/R2CNN-Plus-Plus_Tensorflow) <img src="https://img.shields.io/github/stars/DetectionTeamUCAS/R2CNN-Plus-Plus_Tensorflow?style=social" />, [IoU-Smooth L1 Loss](https://github.com/DetectionTeamUCAS/RetinaNet_Tensorflow_Rotation) <img src="https://img.shields.io/github/stars/DetectionTeamUCAS/RetinaNet_Tensorflow_Rotation?style=social" />
-  - [x] [RetinaNet-H, RetinaNet-R](https://arxiv.org/abs/1908.05612): [TF code](https://github.com/DetectionTeamUCAS/RetinaNet_Tensorflow_Rotation) <img src="https://img.shields.io/github/stars/DetectionTeamUCAS/RetinaNet_Tensorflow_Rotation?style=social" />
-  - [x] [RefineRetinaNet (CascadeRetinaNet)](https://arxiv.org/abs/1908.05612): [TF code](https://github.com/yangxue0827/RotationDetection) <img src="https://img.shields.io/github/stars/Thinklab-SJTU/R3Det_Tensorflow?style=social" />
-  - [x] [FCOS](https://arxiv.org/abs/1904.01355)
-  - [x] [RSDet **(AAAI21)**](https://arxiv.org/abs/1911.08299): [TF code](https://github.com/Mrqianduoduo/RSDet-8P-4R) <img src="https://img.shields.io/github/stars/Mrqianduoduo/RSDet-8P-4R?style=social" />
-  - [x] [R<sup>3</sup>Det **(AAAI21)**](https://arxiv.org/abs/1908.05612): [TF code](https://github.com/Thinklab-SJTU/R3Det_Tensorflow) <img src="https://img.shields.io/github/stars/Thinklab-SJTU/R3Det_Tensorflow?style=social" />, [Pytorch code](https://github.com/SJTU-Thinklab-Det/r3det-on-mmdetection) <img src="https://img.shields.io/github/stars/SJTU-Thinklab-Det/r3det-on-mmdetection?style=social" />
-  - [x] [Circular Smooth Label (CSL, **ECCV20**)](https://arxiv.org/abs/2003.05597): [TF code](https://github.com/Thinklab-SJTU/CSL_RetinaNet_Tensorflow) <img src="https://img.shields.io/github/stars/Thinklab-SJTU/CSL_RetinaNet_Tensorflow?style=social" />
-  - [x] [Densely Coded Label (DCL, **CVPR21**)](https://arxiv.org/abs/2011.09670): [TF code](https://github.com/Thinklab-SJTU/DCL_RetinaNet_Tensorflow) <img src="https://img.shields.io/github/stars/Thinklab-SJTU/DCL_RetinaNet_Tensorflow?style=social" />
-  - [x] [GWD (**ICML21**)](https://arxiv.org/abs/2101.11952): [TF code](https://github.com/yangxue0827/RotationDetection) <img src="https://img.shields.io/github/stars/yangxue0827/RotationDetection?style=social" />, [Pytorch code (YOLOv5-GWD)](https://github.com/zhanggefan/rotmmdet) <img src="https://img.shields.io/github/stars/zhanggefan/rotmmdet?style=social" />
-  - [ ] [KLD](https://arxiv.org/abs/2106.01883): [TF code](https://github.com/yangxue0827/RotationDetection) <img src="https://img.shields.io/github/stars/yangxue0827/RotationDetection?style=social" />
-  - [x] [RIDet](https://arxiv.org/abs/2103.11636): [Pytorch code](https://github.com/ming71/RIDet) <img src="https://img.shields.io/github/stars/ming71/RIDet?style=social" />
-  - [x] Mixed method: R<sup>3</sup>Det-DCL, R<sup>3</sup>Det-GWD, R<sup>3</sup>Det-KLD, FCOS-RSDet
-- [x] Loss: CE, [Focal Loss](https://arxiv.org/abs/1708.02002), [Smooth L1 Loss](https://arxiv.org/abs/1504.08083), [IoU-Smooth L1 Loss](https://arxiv.org/abs/1811.07126), [Modulated Loss](https://arxiv.org/abs/1911.08299)
-- [x] [Others](./OTHERS.md): [SWA](https://arxiv.org/pdf/2012.12645.pdf), exportPb, [MMdnn](https://github.com/Microsoft/MMdnn)
-
-The above-mentioned rotation detectors are all modified based on the following horizontal detectors:
-- Faster RCNN: [TF code](https://github.com/DetectionTeamUCAS/Faster-RCNN_Tensorflow) <img src="https://img.shields.io/github/stars/DetectionTeamUCAS/Faster-RCNN_Tensorflow?style=social" />
-- R-FCN: [TF code](https://github.com/DetectionTeamUCAS/R-FCN_Tensorflow) <img src="https://img.shields.io/github/stars/DetectionTeamUCAS/R-FCN_Tensorflow?style=social" />
-- FPN: [TF code1](https://github.com/DetectionTeamUCAS/FPN_Tensorflow) <img src="https://img.shields.io/github/stars/DetectionTeamUCAS/FPN_Tensorflow?style=social" />, [TF code2 (Deprecated)](https://github.com/yangxue0827/FPN_Tensorflow) <img src="https://img.shields.io/github/stars/yangxue0827/FPN_Tensorflow?style=social" />
-- Cascade RCNN: [TF code](https://github.com/DetectionTeamUCAS/Cascade-RCNN_Tensorflow) <img src="https://img.shields.io/github/stars/DetectionTeamUCAS/Cascade-RCNN_Tensorflow?style=social" />
-- Cascade FPN RCNN: [TF code](https://github.com/DetectionTeamUCAS/Cascade_FPN_Tensorflow) <img src="https://img.shields.io/github/stars/DetectionTeamUCAS/Cascade_FPN_Tensorflow?style=social" /> 
-- RetinaNet: [TF code](https://github.com/DetectionTeamUCAS/RetinaNet_Tensorflow) <img src="https://img.shields.io/github/stars/DetectionTeamUCAS/RetinaNet_Tensorflow?style=social" />
-- RefineDet: [MxNet code](https://github.com/DetectionTeamUCAS/RefineDet_MxNet) <img src="https://img.shields.io/github/stars/DetectionTeamUCAS/RefineDet_MxNet?style=social" />
-- FCOS: [TF code](https://github.com/DetectionTeamUCAS/FCOS_Tensorflow) <img src="https://img.shields.io/github/stars/DetectionTeamUCAS/FCOS_Tensorflow?style=social" />, [MxNet code](https://github.com/DetectionTeamUCAS/FCOS_GluonCV) <img src="https://img.shields.io/github/stars/DetectionTeamUCAS/FCOS_GluonCV?style=social" />
-
 ![3](demo.gif)
 
 ## Projects
@@ -79,7 +47,7 @@ Base setting:
 | - | [R<sup>2</sup>CNN (Faster-RCNN)](https://arxiv.org/abs/1706.09579) | 72.27 | 66.45 | 52.35 | [Baidu Drive (02s5)](https://pan.baidu.com/s/1tdIc2IUouVwrwUSIbNdvWg) | H->R | Reg. (∆⍬) | smooth L1 | [-90,0)  | [dota1.0,](./libs/configs/DOTA/r2cnn/cfgs_res50_dota_v1.py) [dota1.5](./libs/configs/DOTA1.5/r2cnn/cfgs_res50_dota1.5_r2cnn_v1.py) [dota2.0](./libs/configs/DOTA2.0/r2cnn/cfgs_res50_dota2.0_r2cnn_v1.py) |
 
 **Note:**    
-- Single GPU training: [SAVE_WEIGHTS_INTE](./libs/configs/cfgs.py) = iter_epoch * 1 (DOTA1.0: iter_epoch=27000, DOTA1.5: iter_epoch=32000, DOTA2.0: iter_epoch=40000)
+- Single GPU training: [SAVE_WEIGHTS_INTE](./libs/configs/cfgs.py) = iter_epoch * 1 
 - Multi-GPU training (**better**): [SAVE_WEIGHTS_INTE](./libs/configs/cfgs.py) = iter_epoch * 2
 
 ## My Development Environment
@@ -197,86 +165,6 @@ tensorboard --logdir=.
 
 ![2](scalars.png)
 
-## Citation
-
-If you find our code useful for your research, please consider cite.
-
-```
-@article{yang2021learning,
-    title={Learning High-Precision Bounding Box for Rotated Object Detection via Kullback-Leibler Divergence},
-    author={Yang, Xue and Yang, Xiaojiang and Yang, Jirui and Ming, Qi and Wang, Wentao and Tian, Qi and Yan, Junchi},
-    journal={arXiv preprint arXiv:2106.01883},
-    year={2021}
-}
-
-@inproceedings{yang2021rethinking,
-    title={Rethinking Rotated Object Detection with Gaussian Wasserstein Distance Loss},
-    author={Yang, Xue and Yan, Junchi and Qi, Ming and Wang, Wentao and Xiaopeng, Zhang and Qi, Tian},
-    booktitle={International Conference on Machine Learning (ICML)},
-    year={2021}
-}
-
-@article{ming2021optimization,
-    title={Optimization for Oriented Object Detection via Representation Invariance Loss},
-    author={Ming, Qi and Zhou, Zhiqiang and Miao, Lingjuan and Yang, Xue and Dong, Yunpeng},
-    journal={arXiv preprint arXiv:2103.11636},
-    year={2021}
-}
-
-@inproceedings{yang2021dense,
-    title={Dense Label Encoding for Boundary Discontinuity Free Rotation Detection},
-    author={Yang, Xue and Hou, Liping and Zhou, Yue and Wang, Wentao and Yan, Junchi},
-    booktitle={Proceedings of the IEEE Computer Vision and Pattern Recognition (CVPR)},
-    month={June},
-    year={2021},
-    pages={15819-15829}
-}
-
-@inproceedings{yang2020arbitrary,
-    title={Arbitrary-oriented object detection with circular smooth label},
-    author={Yang, Xue and Yan, Junchi},
-    booktitle={European Conference on Computer Vision (ECCV)},
-    pages={677--694},
-    year={2020},
-    organization={Springer}
-}
-
-@inproceedings{yang2021r3det,
-    title={R3Det: Refined Single-Stage Detector with Feature Refinement for Rotating Object},
-    author={Yang, Xue and Yan, Junchi and Feng, Ziming and He, Tao},
-    booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
-    volume={35},
-    number={4},
-    pages={3163--3171},
-    year={2021}
-}
-
-@inproceedings{qian2021learning,
-    title={Learning Modulated Loss for Rotated Object Detection},
-    author={Qian, Wen and Yang, Xue and Peng, Silong and Yan, Junchi and Guo, Yue},
-    booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
-    volume={35},
-    number={3},
-    pages={2458--2466},
-    year={2021}
-}
-
-@article{yang2020scrdet++,
-    title={SCRDet++: Detecting Small, Cluttered and Rotated Objects via Instance-Level Feature Denoising and Rotation Loss Smoothing},
-    author={Yang, Xue and Yan, Junchi and Yang, Xiaokang and Tang, Jin and Liao, Wenglong and He, Tao},
-    journal={arXiv preprint arXiv:2004.13316},
-    year={2020}
-}
-
-@inproceedings{yang2019scrdet,
-    title={SCRDet: Towards more robust detection for small, cluttered and rotated objects},
-    author={Yang, Xue and Yang, Jirui and Yan, Junchi and Zhang, Yue and Zhang, Tengfei and Guo, Zhi and Sun, Xian and Fu, Kun},
-    booktitle={Proceedings of the IEEE International Conference on Computer Vision (ICCV)},
-    pages={8232--8241},
-    year={2019}
-}
-
-```
 
 ## Reference
 1、https://github.com/endernewton/tf-faster-rcnn   
