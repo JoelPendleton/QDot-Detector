@@ -9,7 +9,7 @@ from libs.configs._base_.schedules.schedule_1x import *
 from dataloader.pretrained_weights.pretrain_zoo import PretrainModelZoo
 
 # schedule
-BATCH_SIZE = 20
+BATCH_SIZE = 10
 GPU_GROUP = "0,1,2,3"
 NUM_GPU = len(GPU_GROUP.strip().split(','))
 LR = 0.001 * BATCH_SIZE * NUM_GPU
@@ -27,7 +27,7 @@ pretrain_zoo = PretrainModelZoo()
 PRETRAINED_CKPT = pretrain_zoo.pretrain_weight_path(NET_NAME, ROOT_PATH)
 TRAINED_CKPT = os.path.join(ROOT_PATH, 'output/trained_weights')
 
-VERSION = 'FPN_Res50D_QDOT_v2_20210911'
+VERSION = 'FPN_Res50D_QDOT_v1_20210911'
 
 """
 R2CNN
