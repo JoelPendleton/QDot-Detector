@@ -166,9 +166,9 @@ After you have setup your AWS instance execute the following
 ## Tensorboard
 ```  
 cd $PATH_ROOT/output/summary
-tensorboard --logdir=.
+tensorboard --logdir=. --port 6007
 ``` 
-
+This opens tensorboard on port 6007 for monitoring our training progress.
 ![1](images.png)
 
 ![2](scalars.png)
