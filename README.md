@@ -38,10 +38,12 @@ I also added IAM role so I could access all S3 storage instances using the AWS C
 ### Docker Container
 
 After you have setup your AWS instance execute the following
+
     ```
     docker run --gpus all -it -v /home/ubuntu/qdot-detector/:/workspace/qdot-detector -p 6007:6007 yangxue2docker/py3-tf1.15.2-nv-torch1.8.0-cuda11:v1.0
     ```
-    This downloads the docker container and starts it.
+
+This downloads the docker container and starts it with access to all the GPUs and port 6007.
     
  You may find the following commands useful
  
