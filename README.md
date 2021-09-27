@@ -1,22 +1,10 @@
 # CoulombDet
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-
-**Papers and codes related to remote sensing/aerial image detection: [DOTA-DOAI](https://github.com/SJTU-Thinklab-Det/DOTA-DOAI) <img src="https://img.shields.io/github/stars/SJTU-Thinklab-Det/DOTA-DOAI?style=social" />.**      
+ 
 
 ## Projects
 ![0](projects.png)
-
-## Latest Performance
-
-More results and trained models are available in the [MODEL_ZOO.md](MODEL_ZOO.md).
-
-### DOTA (Task1)
-Base setting: 
-
-|   Backbone  |  Neck  |  Training/test dataset  | Data Augmentation | Epoch |      
-|:-----------:|:------:|:-----------------------:|:-----------------:|:-----:|
-| ResNet50_v1d 600->800 | FPN | trainval/test | × | **13 (AP50) or 17 (AP50:95) is enough for baseline (default is 13)** |
 
 
 **Note:**    
@@ -58,6 +46,26 @@ I also added IAM role so I could access all S3 storage instances using the AWS C
 
 4. Once you are inside your EC2 instance, clone this repository.
 
+### Docker Container
+
+After you have setup your AWS instance execute the following
+    ```
+    docker run --gpus all -it -v /home/ubuntu/qdot-detector/:/workspace/qdot-detector -p 6007:6007 yangxue2docker/py3-tf1.15.2-nv-torch1.8.0-cuda11:v1.0
+    ```
+    This downloads the docker container and starts it.
+    
+ You may find the following commands useful
+ 
+    ```
+    1. To see the IDs of all of the containers you have created (currently running or not): docker ps -aq
+    2. To see the current running containers: docker container ls
+    3. To attach to a container: docker attach [container-id]
+    4. To start a container that has stopped running type: docker start [container-id]
+    5. To exit a container without stopping it press CTRL+p then CTRL+q
+
+    ```
+ 
+
 ### Trained weights
 1. Please download trained models by this project, then put them to $PATH_ROOT/output/pretained_weights.
 2. To get the weights for the R2CNN architecture, navigate to $PATH_ROOT/output and simply execute 
@@ -82,13 +90,11 @@ I also added IAM role so I could access all S3 storage instances using the AWS C
 ## Train 
 
 1. If you want to train your own dataset, please note:  
-    ```
-    (1) Select the detector and dataset you want to use, and mark them as #DETECTOR and #DATASET (such as #DETECTOR=retinanet and #DATASET=DOTA)
+    ```(1) Select the detector and dataset you want to use, and mark them as #DETECTOR and #DATASET (such as #DETECTOR=retinanet and #DATASET=DOTA)
     (2) Modify parameters (such as CLASS_NUM, DATASET_NAME, VERSION, etc.) in $PATH_ROOT/libs/configs/#DATASET/#DETECTOR/cfgs_xxx.py
     (3) Copy $PATH_ROOT/libs/configs/#DATASET/#DETECTOR/cfgs_xxx.py to $PATH_ROOT/libs/configs/cfgs.py
     (4) Add category information in $PATH_ROOT/libs/label_name_dict/label_dict.py     
-    (5) Add data_name to $PATH_ROOT/dataloader/dataset/read_tfrecord.py  
-    ```     
+    (5) Add data_name to $PATH_ROOT/dataloader/dataset/read_tfrecord.py```     
     For the QDOT dataset we use #DATASET as QDOT.
 2. To use the QDOT dataset navigate to $PATH_ROOT/dataloader/dataset/QDOT and call the following
     ```sudo aws s3 sync s3://data-deep-learning-qmt/QDOT/ ./``` this must be performed outside of the container since the docker instance does not have
@@ -96,7 +102,8 @@ I also added IAM role so I could access all S3 storage instances using the AWS C
 
 2. Make tfrecord       
     
-    This step need to be performed in the docker container
+    This step needs to be performed in the docker container.
+    
     If image is very large (such as DOTA dataset), the image needs to be cropped. Take DOTA dataset as a example:      
     ```  
     cd $PATH_ROOT/dataloader/dataset/DOTA
