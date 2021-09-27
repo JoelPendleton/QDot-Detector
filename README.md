@@ -29,7 +29,12 @@
 1. Create an EC2 Instance with at least 2 GPUs and 220GB of Elastic Block Storage. I used the g4dn.12xlarge instance type.
 I also added IAM role so I could access all S3 storage instances using the AWS CLI from within my EC2 instance.
 
+![1](ami-example.png)
+
+
 2. Use the following security group settings using your IP instead:
+![2](security-group.png)
+
 
 3. Generate a public-private key pair so you can easily SHH into your instance.
 
