@@ -96,26 +96,33 @@ Download a pretrain weight you need from the following three options, and then p
 ## Train 
 
 1. If you want to train your own dataset, please note:  
+
     ```(1) Select the detector and dataset you want to use, and mark them as #DETECTOR and #DATASET (such as #DETECTOR=retinanet and #DATASET=DOTA)
     (2) Modify parameters (such as CLASS_NUM, DATASET_NAME, VERSION, etc.) in $PATH_ROOT/libs/configs/#DATASET/#DETECTOR/cfgs_xxx.py
     (3) Copy $PATH_ROOT/libs/configs/#DATASET/#DETECTOR/cfgs_xxx.py to $PATH_ROOT/libs/configs/cfgs.py
     (4) Add category information in $PATH_ROOT/libs/label_name_dict/label_dict.py     
-    (5) Add data_name to $PATH_ROOT/dataloader/dataset/read_tfrecord.py```     
-    For the QDOT dataset we use #DATASET as QDOT.
-2. To use the QDOT dataset navigate to $PATH_ROOT/dataloader/dataset/QDOT and call the following
-    ```sudo aws s3 sync s3://data-deep-learning-qmt/QDOT/ ./``` this must be performed outside of the container since the docker instance does not have
-    the AWS CLI installed.
+    (5) Add data_name to $PATH_ROOT/dataloader/dataset/read_tfrecord.py```
+    
+  For the QDOT dataset we use #DATASET as QDOT.
+2. To use the QDOT dataset navigate to $PATH_ROOT/dataloader/dataset/QDOT and execute the following
+
+    ```sudo aws s3 sync s3://data-deep-learning-qmt/QDOT/ ./``` 
+    
+    This must be performed outside of the container since the docker instance does not have the AWS CLI installed.
 
 2. Make tfrecord       
     
     This step needs to be performed in the docker container.
     
-    If image is very large (such as DOTA dataset), the image needs to be cropped. Take DOTA dataset as a example:      
+    If image is very large (such as DOTA dataset), the image needs to be cropped. Take DOTA dataset as a example:  
+    
     ```  
     cd $PATH_ROOT/dataloader/dataset/DOTA
     python data_crop.py
     ```  
+    
     If image does not need to be cropped, just convert the annotation file into xml format, refer to [example.xml](./example.xml).
+    
     ```  
     cd $PATH_ROOT/dataloader/dataset/  
     python convert_data_to_tfrecord.py --root_dir='/PATH/TO/DOTA/' 
@@ -125,7 +132,9 @@ Download a pretrain weight you need from the following three options, and then p
                                        --img_format='.png' 
                                        --dataset='DOTA'
     ```  
+    
     The images for the QDOT dataset do not need to be cropped so you can execute the following
+    
     ```
     python convert_data_to_tfrecord.py --root_dir='/workspace/qdot-detector/dataloader/dataset/QDOT/train/' --xml_dir='labeltxt' --image_dir='images' --save_name='train' --img_format='.png' --dataset='QDOT'
     ```
@@ -139,6 +148,7 @@ Download a pretrain weight you need from the following three options, and then p
 
 ## Test
 1. For large-scale image, take DOTA dataset as a example (the output file or visualization is in $PATH_ROOT/tools/#DETECTOR/test_dota/VERSION): 
+
     ```  
     cd $PATH_ROOT/tools/#DETECTOR
     python test_dota.py --test_dir='/PATH/TO/IMAGES/'  
@@ -156,6 +166,7 @@ Download a pretrain weight you need from the following three options, and then p
     **Notice: In order to set the breakpoint conveniently, the read and write mode of the file is' a+'. If the model of the same #VERSION needs to be tested again, the original test results need to be deleted.**
 
 2. For small-scale image, take HRSC2016 dataset as a example: 
+
     ```  
     cd $PATH_ROOT/tools/#DETECTOR
     python test_hrsc2016.py --test_dir='/PATH/TO/IMAGES/'  
@@ -164,7 +175,9 @@ Download a pretrain weight you need from the following three options, and then p
                             --test_annotation_path='/PATH/TO/ANNOTATIONS'
                             -s (visualization, optional)
     ``` 
+    
 3. For the QDOT dataset, we can call
+
     ```
     python test_qdot.py --img_dir='/workspace/qdot-detector/dataloader/dataset/QDOT/test/images' --image_ext='.png' --test_annotation_path='/workspace/qdot-detector/dataloader/dataset/QDOT/test/labeltxt' --gpu='0' -s -ms
     ```
@@ -175,6 +188,7 @@ cd $PATH_ROOT/output/summary
 tensorboard --logdir=. --port 6007
 ``` 
 This opens tensorboard on port 6007 for monitoring our training progress.
+
 ![1](images.png)
 
 ![2](scalars.png)
