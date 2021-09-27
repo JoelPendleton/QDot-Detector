@@ -43,22 +43,21 @@ I also added IAM role so I could access all S3 storage instances using the AWS C
 ### Docker Container
 
 After you have setup your AWS instance execute the following
-
-    ```
-    docker run --gpus all -it -v /home/ubuntu/qdot-detector/:/workspace/qdot-detector -p 6007:6007 yangxue2docker/py3-tf1.15.2-nv-torch1.8.0-cuda11:v1.0
-    ```
+ ```
+ docker run --gpus all -it -v /home/ubuntu/qdot-detector/:/workspace/qdot-detector -p 6007:6007 yangxue2docker/py3-tf1.15.2-nv-torch1.8.0-cuda11:v1.0
+ ```
 
 This downloads the docker container and starts it with access to all the GPUs and port 6007.
     
- You may find the following commands useful
- 
-    ```
-    1. To see the IDs of all of the containers you have created (currently running or not): docker ps -aq
-    2. To see the current running containers: docker container ls
-    3. To attach to a container: docker attach [container-id]
-    4. To start a container that has stopped running type: docker start [container-id]
-    5. To exit a container without stopping it press CTRL+p then CTRL+q
-    ```
+You may find the following commands useful:
+
+ ```
+ 1. To see the IDs of all of the containers you have created (currently running or not): docker ps -aq
+ 2. To see the current running containers: docker container ls
+ 3. To attach to a container: docker attach [container-id]
+ 4. To start a container that has stopped running type: docker start [container-id]
+ 5. To exit a container without stopping it press CTRL+p then CTRL+q
+ ```
 
 ## Download Model
 ### Pretrain weights
@@ -75,33 +74,37 @@ Download a pretrain weight you need from the following three options, and then p
 ### Trained weights
 1. Please download trained models by this project, then put them to $PATH_ROOT/output/pretained_weights.
 2. To get the weights for the R2CNN architecture, navigate to $PATH_ROOT/output and simply execute 
-    ```sudo aws s3 sync s3://data-deep-learning-qmt/R2CNN-Output/ ./ ``` Perform this command ouside of the docker container since it does not 
-    have the AWS CLI installed.  
+ 
+ ```sudo aws s3 sync s3://data-deep-learning-qmt/R2CNN-Output/ ./ ``` 
+ 
+Perform this command ouside of the docker container since it does not have the AWS CLI installed.  
  
 ## Compile
-    ```  
-    cd $PATH_ROOT/libs/utils/cython_utils
-    rm *.so
-    rm *.c
-    rm *.cpp
-    python setup.py build_ext --inplace (or make)
-    
-    cd $PATH_ROOT/libs/utils/
-    rm *.so
-    rm *.c
-    rm *.cpp
-    python setup.py build_ext --inplace
-    ```
+ ```  
+ cd $PATH_ROOT/libs/utils/cython_utils
+ rm *.so
+ rm *.c
+ rm *.cpp
+ python setup.py build_ext --inplace (or make)
+
+ cd $PATH_ROOT/libs/utils/
+ rm *.so
+ rm *.c
+ rm *.cpp
+ python setup.py build_ext --inplace
+ ```
 
 ## Train 
 
 1. If you want to train your own dataset, please note:  
 
-    ```(1) Select the detector and dataset you want to use, and mark them as #DETECTOR and #DATASET (such as #DETECTOR=retinanet and #DATASET=DOTA)
-    (2) Modify parameters (such as CLASS_NUM, DATASET_NAME, VERSION, etc.) in $PATH_ROOT/libs/configs/#DATASET/#DETECTOR/cfgs_xxx.py
-    (3) Copy $PATH_ROOT/libs/configs/#DATASET/#DETECTOR/cfgs_xxx.py to $PATH_ROOT/libs/configs/cfgs.py
-    (4) Add category information in $PATH_ROOT/libs/label_name_dict/label_dict.py     
-    (5) Add data_name to $PATH_ROOT/dataloader/dataset/read_tfrecord.py```
+ ```
+ (1) Select the detector and dataset you want to use, and mark them as #DETECTOR and #DATASET (such as #DETECTOR=retinanet and #DATASET=DOTA)
+ (2) Modify parameters (such as CLASS_NUM, DATASET_NAME, VERSION, etc.) in $PATH_ROOT/libs/configs/#DATASET/#DETECTOR/cfgs_xxx.py
+ (3) Copy $PATH_ROOT/libs/configs/#DATASET/#DETECTOR/cfgs_xxx.py to $PATH_ROOT/libs/configs/cfgs.py
+ (4) Add category information in $PATH_ROOT/libs/label_name_dict/label_dict.py     
+ (5) Add data_name to $PATH_ROOT/dataloader/dataset/read_tfrecord.py
+ ```
     
   For the QDOT dataset we use #DATASET as QDOT.
 2. To use the QDOT dataset navigate to $PATH_ROOT/dataloader/dataset/QDOT and execute the following
