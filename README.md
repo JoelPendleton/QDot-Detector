@@ -180,10 +180,4 @@ This opens tensorboard on port 6007 for monitoring our training progress.
 ![2](scalars.png)
 
 
-## Reference
-1、https://github.com/endernewton/tf-faster-rcnn   
-2、https://github.com/zengarden/light_head_rcnn   
-3、https://github.com/tensorflow/models/tree/master/research/object_detection    
-4、https://github.com/fizyr/keras-retinanet     
-
 
