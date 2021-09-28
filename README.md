@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
  
-This is an object detection algorithm intended to be used to detect coulomb diamonds produced by a single quantum dot system.
+This is a collection of object detection algorithms intended to be used to detect coulomb diamonds produced by a single quantum dot system.
 It builds upon the work performed by Yang Xue et al. in [AlphaRotate: A Rotation Detection Benchmark using TensorFlow](https://github.com/yangxue0827/RotationDetection)
 
 The training data used for coulomb diamond detection was generated using the following [simulator](https://github.com/JoelPendleton/QDot-Constant-Interaction-Model), which is based upon the constant interaction model for electrons in quantum dots.
