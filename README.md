@@ -78,11 +78,7 @@ Download a pretrain weight you need from the following three options, and then p
 
 ### Trained weights
 1. Please download trained models by this project, then put them to $PATH_ROOT/output/pretained_weights.
-2. To get the weights for the R2CNN architecture, navigate to $PATH_ROOT/output and simply execute 
- 
- ```
- sudo aws s3 sync s3://data-deep-learning-qmt/R2CNN-Output/ ./ 
- ``` 
+2. To get the weights for the R2CNN architecture, navigate to $PATH_ROOT/output and place this folder from [DropBox](https://www.dropbox.com/sh/cx2xwg3pcxg3lm5/AAD92A6RpB4CBODdi48J7Uuda?dl=0) inside 
  
 Perform this command ouside of the docker container since it does not have the AWS CLI installed.  
  
