@@ -7,8 +7,6 @@ It builds upon the work performed by Yang Xue et al. in [AlphaRotate: A Rotation
 
 The training data used for coulomb diamond detection was generated using the following [simulator](https://github.com/JoelPendleton/QDot-Constant-Interaction-Model), which is based upon the constant interaction model for electrons in quantum dots.
 
-Video explaining the setup: [YouTube](https://youtu.be/LQWosOqZT08)
-
 ## Projects
 
 Summary of available architecture configurations:
